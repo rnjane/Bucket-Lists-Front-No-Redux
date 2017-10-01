@@ -15,6 +15,8 @@ export default class BucketLists extends Component {
         super();
         this.state = {
             currentBucketId: 0,
+            newname: '',
+            bucketname: '',
             currentBucketName: '',
             bucketlists: [],
             nextPage: '',
@@ -28,9 +30,7 @@ export default class BucketLists extends Component {
     // componentWillMount = () => {
     //     this.getBuckets();
     // }
-
     componentDidMount = () => {
-        console.log(localStorage.getItem('token'))
         this.getBuckets();
         
     }
@@ -175,7 +175,7 @@ export default class BucketLists extends Component {
             { bucketname: this.state.bucketname })
             .then((response) => {
                 if (response.status === 201) {
-                    this.setState({ addModal: false, addSucces: true });
+                    this.setState({ addModal: false, addSucces: true, bucketname: '' });
                     toast('Add successful');
                 }
             })
@@ -196,7 +196,7 @@ export default class BucketLists extends Component {
         )
             .then((response) => {
                 if (response.status === 200) {
-                    this.setState({ editModal: false, editSucces: true });
+                    this.setState({ editModal: false, editSucces: true, newname: '' });
                     toast('Edit Succesful');
                 }
             })
@@ -276,7 +276,7 @@ export default class BucketLists extends Component {
                         <Button type="submit" onClick={this.searchBucket}>Submit</Button>
                     </Navbar.Form>
                     <Nav className="navbar-right">
-                        <NavItem onClick={() => this.setState({ addModal: true })}>New Bucket</NavItem>
+                        <NavItem onClick={() => this.setState({ addModal: true, bucketname: '' })}>New Bucket</NavItem>
                         <NavItem href="#">|</NavItem>
                         <NavDropdown title={`welcome ${localStorage.getItem('username')}`} id="basic-nav-dropdown">
                             <MenuItem >My Profile</MenuItem>
@@ -305,7 +305,7 @@ export default class BucketLists extends Component {
                                 (<tr>
                                     <td>{bucket.bucket_name}</td>
                                     <td className="text-center"><button type="button" className="btn btn-primary btn-sm" onClick={() => this.setState({ currentBucketId: bucket.bucket_id, viewItems: true, currentBucketName: bucket.bucket_name })}>View Items</button></td>
-                                    <td className="text-center"><button type="button" className="btn btn-primary btn-sm" onClick={() => this.setState({ editModal: true, currentBucket: bucket.bucket_name, currentBucketId: bucket.bucket_id })}>Edit</button> </td>
+                                    <td className="text-center"><button type="button" className="btn btn-primary btn-sm" onClick={() => this.setState({ editModal: true, newname: bucket.bucket_name, currentBucketId: bucket.bucket_id })}>Edit</button> </td>
                                     <td className="text-center"><button type="button" className="btn btn-primary btn-sm" onClick={() => this.setState({ deleteModal: true, currentBucket: bucket.bucket_name, currentBucketId: bucket.bucket_id })}>Delete</button></td>
                                 </tr>),
                             )}
@@ -353,9 +353,6 @@ export default class BucketLists extends Component {
                         </Modal.Header>
                         <Modal.Body>
                             <Form>
-                                <FormGroup>
-                                    <FormControl type="text" id="oldname" required value={this.state.currentBucket} disabled />
-                                </FormGroup>
                                 <FormGroup>
                                     <FormControl type="text" id="newname" placeholder="newname" value={this.state.newname} required onChange={this.onNewnameChange}  />
                                 </FormGroup>
