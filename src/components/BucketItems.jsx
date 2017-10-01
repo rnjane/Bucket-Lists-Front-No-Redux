@@ -17,8 +17,9 @@ export default class BucketItems extends Component {
     this.state = {
       items: [],
       currentItemId: 0,
+      currentbucketname: '',
       gohome: false,
-      logout: false
+      logout: false,
     };
   }
 
@@ -102,7 +103,7 @@ export default class BucketItems extends Component {
       { headers: { token: localStorage.getItem('token') } })
       .then((response) => {
         if (response.status === 200) {
-          this.setState({ addItem: false });
+          this.setState({ addItem: false, status: true });
           toast('Item added');
         }
         else if (response.status === 205) {
@@ -136,7 +137,7 @@ export default class BucketItems extends Component {
       { headers: { token: localStorage.getItem('token') } })
       .then((response) => {
         if (response.status === 200) {
-          this.setState({ editItem: false });
+          this.setState({ editItem: false, status: true });
           toast('Edit succesful');
         }
         else {
@@ -167,7 +168,7 @@ export default class BucketItems extends Component {
       { headers: { token: localStorage.getItem('token') } })
       .then((response) => {
         if (response.status === 200) {
-          this.setState({ deleteItem: false });
+          this.setState({ deleteItem: false, status: true });
           toast('item deleted');
         }
         else {
@@ -188,7 +189,7 @@ export default class BucketItems extends Component {
     /**
     update items in state after edit, delete and add of an item.
     */
-    if (this.state.addItem || this.state.deleteItem || this.state.editItem) {
+    if (this.state.status) {
       this.getItems();
     }
 
@@ -222,7 +223,7 @@ export default class BucketItems extends Component {
             </Navbar.Brand>
           </Navbar.Header>
           <Nav className="navbar-right">
-            <NavItem onClick={() => this.setState({ addItem: true })}>New Item</NavItem>
+            <NavItem onClick={() => this.setState({ addItem: true, activityname: '' })}>New Item</NavItem>
             <NavItem href="#">|</NavItem>
             <NavDropdown title={'welcome ' + localStorage.getItem('username')} id="basic-nav-dropdown">
               <MenuItem>My Profile</MenuItem>
@@ -251,7 +252,7 @@ export default class BucketItems extends Component {
                 (<tr className='clickable-row' data-href='google.com'>
                   <td>{item.item_name}</td>
                   <td className="text-center">{item.item_status}</td>
-                  <td className="text-center"><button type="button" className="btn btn-primary btn-sm" onClick={() => this.setState({ editItem: true, currentItem: item.item_name, currentItemId: item.item_id })}>Edit</button> </td>
+                  <td className="text-center"><button type="button" className="btn btn-primary btn-sm" onClick={() => this.setState({ editItem: true, newname: item.item_name, currentItemId: item.item_id })}>Edit</button> </td>
                   <td className="text-center"><button type="button" className="btn btn-primary btn-sm" onClick={() => this.setState({ deleteItem: true, currentItem: item.item_name, currentItemId: item.item_id })}>Delete</button> </td>
                 </tr>),
               )}
@@ -298,7 +299,7 @@ export default class BucketItems extends Component {
             <Modal.Body>
               <Form>
                 <FormGroup>
-                  <FormControl type="text" id="newname" value={this.state.currentItem} placeholder="newname" value={this.state.newname} required onChange={this.onNewnameChange} />
+                  <FormControl type="text" id="newname" value={this.state.newname} required onChange={this.onNewnameChange} />
                 </FormGroup>
                 <FormGroup controlId="formControlsSelect">
                   <FormControl componentClass="select" id="status" placeholder="Status">
