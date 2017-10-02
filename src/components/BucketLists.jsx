@@ -17,6 +17,7 @@ export default class BucketLists extends Component {
             currentBucketId: 0,
             newname: '',
             bucketname: '',
+            search: '',
             currentBucketName: '',
             bucketlists: [],
             nextPage: '',
@@ -27,12 +28,8 @@ export default class BucketLists extends Component {
     /**
     fetch all the bucketlists before the component mounts.
     */
-    // componentWillMount = () => {
-    //     this.getBuckets();
-    // }
-    componentDidMount = () => {
+    componentWillMount = () => {
         this.getBuckets();
-        
     }
 
     /**
@@ -49,9 +46,7 @@ export default class BucketLists extends Component {
                     if (response.data.next_page) {
                         this.setState({ next_page: response.data.next_page });
                     }
-                    /**
-                    check if response has previous page, and add it to state.
-                    */
+
                     if (response.data.previous_page) {
                         this.setState({ previous_page: response.data.previous_page });
                     }
@@ -83,34 +78,13 @@ export default class BucketLists extends Component {
             });
     }
 
-    /**
-    method to handle search box change, and assign value to state.
-    */
-    onSearchChange = (event) => {
+    onValueChange = (event) => {
         this.setState({
-            search: event.target.value
+            [event.target.id]: event.target.value
         })
     }
 
-    /**
-    method to handle new name in bucket edit change, and assign value to state.
-    */
-    onNewnameChange = (event) => {
-        this.setState({
-            newname: event.target.value
-        })
-    }
-
-    /**
-    method to handle new bucketlist name change, and assign value to state.
-    */
-    onBucketnameChange = (event) => {
-        this.setState({
-            bucketname: event.target.value
-        })
-    }
-
-    /**
+    /*
     Method to logout a user.
     */
     logout = () => {
@@ -119,7 +93,7 @@ export default class BucketLists extends Component {
         this.setState({ logout: true })
     }
 
-    /**
+    /*
     method to go to the next page, when buckets are more than 10(default number of items per page.)
     */
     goNext = () => {
@@ -143,7 +117,7 @@ export default class BucketLists extends Component {
             });
     }
 
-    /**
+    /*
     method to go to the previous page, when it is available.)
     */
     goPrevious = () => {
@@ -239,17 +213,10 @@ export default class BucketLists extends Component {
             this.getBuckets();
         }
 
-        /**
-        redirect to login page after log out.
-        */
         if (this.state.logout) {
             return (<Redirect to='/login' />);
         }
 
-        /**
-        when viewing items, add the bucket id and name of the bucketlist
-        you are viewing items for to local storage.
-        */
         if (this.state.viewItems) {
             localStorage.setItem('bucketId', this.state.currentBucketId);
             localStorage.setItem('bucketname', this.state.currentBucketName);
@@ -270,7 +237,7 @@ export default class BucketLists extends Component {
 
                     <Navbar.Form pullRight>
                         <FormGroup>
-                            <FormControl type="text" id="bucketsearch" placeholder="Search Bucketlist" value={this.state.search} required onChange={this.onSearchChange} />
+                            <FormControl type="text" id="bucketsearch" placeholder="Search Bucketlist" value={this.state.search} required onChange={this.onValueChange} />
                         </FormGroup>
                         {' '}
                         <Button type="submit" onClick={this.searchBucket}>Submit</Button>
@@ -330,7 +297,7 @@ export default class BucketLists extends Component {
                         </Modal.Header>
                         <Modal.Body>
                             <Form>
-                                <FormControl type="text" id="bucketname" placeholder="bucketname" value={this.state.bucketname} required onChange={this.onBucketnameChange}  />
+                                <FormControl type="text" id="bucketname" placeholder="bucketname" value={this.state.bucketname} required onChange={this.onValueChange}  />
                             </Form>
                         </Modal.Body>
                         <Modal.Footer>
@@ -354,7 +321,7 @@ export default class BucketLists extends Component {
                         <Modal.Body>
                             <Form>
                                 <FormGroup>
-                                    <FormControl type="text" id="newname" placeholder="newname" value={this.state.newname} required onChange={this.onNewnameChange}  />
+                                    <FormControl type="text" id="newname" placeholder="newname" value={this.state.newname} required onChange={this.onValueChange}  />
                                 </FormGroup>
                             </Form>
                         </Modal.Body>

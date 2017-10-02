@@ -12,12 +12,15 @@ export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loginSucces: false
+            loginSucces: false,
+            password: '',
+            username: ''
         }
     }
 
     /**
-    Login method, 
+    Login method, get username and password from state, 
+    store the returned token and username to local storage.
     */
     login = (event) => {
         event.preventDefault()
@@ -43,21 +46,9 @@ export default class Login extends Component {
             });
     }
 
-    /**
-    method to handle password change.
-    */
-    onPasswordChange = (event) => {
+    onValueChange = (event) => {
         this.setState({
-            password: event.target.value
-        })
-    }
-
-    /**
-    method to handle user name change.
-    */
-    onUsernameChange = (event) => {
-        this.setState({
-            username: event.target.value
+            [event.target.id]: event.target.value
         })
     }
 
@@ -66,10 +57,6 @@ export default class Login extends Component {
     */
     render() {
         const { loginSucces } = this.state
-
-        /**
-        Redirect to buckets page when login is succesful.
-        */
         if (loginSucces && localStorage.getItem('token') !== '') {
             return (<Redirect to="/bucketlists" />)
         }
@@ -93,10 +80,10 @@ export default class Login extends Component {
                             <Col className="col-lg-12">
                                 <Form onSubmit={this.login}>
                                     <FormGroup>
-                                        <FormControl type="text" id="username" placeholder="username" value={this.state.username} required onChange={this.onUsernameChange} />
+                                        <FormControl type="text" id="username" placeholder="username" value={this.state.username} required onChange={this.onValueChange} />
                                     </FormGroup>
                                     <FormGroup>
-                                        <FormControl type="password" id="password" placeholder="password" value={this.state.password} required onChange={this.onPasswordChange} />
+                                        <FormControl type="password" id="password" placeholder="password" value={this.state.password} required onChange={this.onValueChange} />
                                     </FormGroup>
                                     <FormGroup>
                                         <FormControl type="submit" value="Login" className="btn btn-primary" />

@@ -16,6 +16,9 @@ export default class BucketItems extends Component {
     super();
     this.state = {
       items: [],
+      activityname: '',
+      newname: '',
+      search: '',
       currentItemId: 0,
       currentbucketname: '',
       gohome: false,
@@ -37,32 +40,11 @@ export default class BucketItems extends Component {
 
   }
 
-  /**
-  method to search for a bucket list activity.
-  */
-  onSearchChange = (event) => {
-        this.setState({
-            search: event.target.value
-        })
-    }
-
-  /**
-  method to handle new name in bucket item edit change, and assign value to state.
-  */
-  onNewnameChange = (event) => {
-      this.setState({
-          newname: event.target.value
-      })
-  }
-
-  /**
-  method to handle new item name change, and assign value to state.
-  */
-  onActivitynameChange = (event) => {
-      this.setState({
-          activityname: event.target.value
-      })
-  }
+  onValueChange = (event) => {
+    this.setState({
+        [event.target.id]: event.target.value
+    })
+}
 
   /**
   check if user is logged in, when component has mounted.
@@ -186,30 +168,18 @@ export default class BucketItems extends Component {
   method to render the bucket list items page.
   */
   render = () => {
-    /**
-    update items in state after edit, delete and add of an item.
-    */
     if (this.state.status) {
       this.getItems();
     }
 
-    /**
-    redirect to login page after user logs out.
-    */
     if (this.state.logout) {
       return (<Redirect to='/login' />);
     }
 
-    /**
-    redirect to bucket lists page from the bucket items page.
-    */
     if (this.state.gohome) {
       return (<Redirect to="/bucketlists" />);
     }
 
-    /**
-    code to close all the modals in the bucket items page.
-    */
     const close = () => this.setState({ addItem: false, editItem: false, deleteItem: false });
     return (
       <div>
@@ -274,7 +244,7 @@ export default class BucketItems extends Component {
             <Modal.Body>
               <Form>
                 <FormGroup>
-                  <FormControl type="text" id="itemname" placeholder="itemname" value={this.state.activityname} required onChange={this.onActivitynameChange} />
+                  <FormControl type="text" id="itemname" placeholder="itemname" value={this.state.activityname} required onChange={this.onValueChange} />
                 </FormGroup>
               </Form>
             </Modal.Body>
@@ -299,7 +269,7 @@ export default class BucketItems extends Component {
             <Modal.Body>
               <Form>
                 <FormGroup>
-                  <FormControl type="text" id="newname" value={this.state.newname} required onChange={this.onNewnameChange} />
+                  <FormControl type="text" id="newname" value={this.state.newname} required onChange={this.onValueChange} />
                 </FormGroup>
                 <FormGroup controlId="formControlsSelect">
                   <FormControl componentClass="select" id="status" placeholder="Status">

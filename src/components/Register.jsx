@@ -13,13 +13,18 @@ export default class Register extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			registerSucces: false
+			registerSucces: false,
+			username: '',
+			first_name: '',
+			last_name: '',
+			email: '',
+			password: '',
 		}
 		this.register = this.register.bind(this);
 	}
 	
 	/**
-    Registration method.
+    Registration method using values from state.
     */
 	register = (event) => {
 		event.preventDefault()
@@ -42,48 +47,9 @@ export default class Register extends Component {
 			});
 	}
 
-	/**
-    method to handle password change, and update state.
-    */
-	onPasswordChange = (event) => {
+	onValueChange = (event) => {
         this.setState({
-            password: event.target.value
-        })
-    }
-
-	/**
-    method to handle username change, and update state.
-    */
-    onUsernameChange = (event) => {
-        this.setState({
-            username: event.target.value
-        })
-	}
-	
-	/**
-    method to handle first name change, and update the state.
-    */
-	onFirstnameChange = (event) => {
-        this.setState({
-            first_name: event.target.value
-        })
-    }
-
-	/**
-    method to handle last name change, and update the state.
-    */
-    onLastnameChange = (event) => {
-        this.setState({
-            last_name: event.target.value
-        })
-	}
-	
-	/**
-    method to handle email change, and update the state.
-    */
-	onEmailChange = (event) => {
-        this.setState({
-            email: event.target.value
+            [event.target.id]: event.target.value
         })
     }
 	
@@ -93,12 +59,10 @@ export default class Register extends Component {
 	render() {
 		const { registerSucces } = this.state
 
-		/**
-    	redirect to login page when login is succesful
-    	*/
 		if (registerSucces) {
 			return <Redirect to='/login' />
 		}
+
 		return (
 			<Row>
 				<ToastContainer
@@ -118,22 +82,22 @@ export default class Register extends Component {
 							<Col className="col-lg-12">
 								<Form onSubmit={this.register}>
 									<FormGroup>
-										<FormControl type="text" id="first_name" placeholder="First Name"  value={this.state.first_name} required onChange={this.onFirstnameChange} />
+										<FormControl type="text" id="first_name" placeholder="First Name"  value={this.state.first_name} required onChange={this.onValueChange} />
 									</FormGroup>
 									<FormGroup>
-										<FormControl type="text" id="last_name" placeholder="Last Name"  value={this.state.last_name} required onChange={this.onLastnameChange}  />
+										<FormControl type="text" id="last_name" placeholder="Last Name"  value={this.state.last_name} required onChange={this.onValueChange}  />
 									</FormGroup>
 									<FormGroup>
-										<FormControl type="text" id="user_name" placeholder="username"  value={this.state.username} required onChange={this.onUsernameChange}  />
+										<FormControl type="text" id="user_name" placeholder="username"  value={this.state.username} required onChange={this.onValueChange}  />
 									</FormGroup>
 									<FormGroup>
-										<FormControl type="text" id="email" placeholder="Email"  value={this.state.email} required onChange={this.onEmailChange}  />
+										<FormControl type="text" id="email" placeholder="Email"  value={this.state.email} required onChange={this.onValueChange}  />
 									</FormGroup>
 									<FormGroup>
-										<FormControl type="password" id="password" placeholder="password" value={this.state.password} required onChange={this.onPasswordChange} ired />
+										<FormControl type="password" id="password" placeholder="password" value={this.state.password} required onChange={this.onValueChange} ired />
 									</FormGroup>
 									<FormGroup>
-										<FormControl type="password" id="confirm-password" placeholder="confirm password"  required />
+										<FormControl type="password" id="confirm-password" placeholder="confirm password" required />
 									</FormGroup>
 									<FormGroup>
 										<FormControl type="submit" value="Register" className="btn btn-primary" />
