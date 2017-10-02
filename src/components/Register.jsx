@@ -88,7 +88,7 @@ export default class Register extends Component {
 										<FormControl type="text" id="last_name" placeholder="Last Name"  value={this.state.last_name} required onChange={this.onValueChange}  />
 									</FormGroup>
 									<FormGroup>
-										<FormControl type="text" id="user_name" placeholder="username"  value={this.state.username} required onChange={this.onValueChange}  />
+										<FormControl type="text" id="username" placeholder="username"  value={this.state.username} required onChange={this.onValueChange}  />
 									</FormGroup>
 									<FormGroup>
 										<FormControl type="text" id="email" placeholder="Email"  value={this.state.email} required onChange={this.onValueChange}  />
