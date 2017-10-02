@@ -16,7 +16,7 @@ export default class BucketItems extends Component {
     super();
     this.state = {
       items: [],
-      activityname: '',
+      itemname: '',
       newname: '',
       search: '',
       currentItemId: 0,
@@ -42,9 +42,9 @@ export default class BucketItems extends Component {
 
   onValueChange = (event) => {
     this.setState({
-        [event.target.id]: event.target.value
+      [event.target.id]: event.target.value
     })
-}
+  }
 
   /**
   check if user is logged in, when component has mounted.
@@ -80,8 +80,11 @@ export default class BucketItems extends Component {
   */
   addItem = (event) => {
     event.preventDefault();
+    if (this.state.itemname === ''){
+      toast('item name can not be empty')
+    }else{
     instance.post(`bucketlists/${localStorage.getItem('bucketId')}/items`,
-      { itemname: this.state.activityname },
+      { itemname: this.state.itemname },
       { headers: { token: localStorage.getItem('token') } })
       .then((response) => {
         if (response.status === 200) {
@@ -96,7 +99,7 @@ export default class BucketItems extends Component {
         if (error.response) {
           toast(error.response.data.message);
         }
-      });
+      });}
   }
 
   /**
@@ -193,7 +196,7 @@ export default class BucketItems extends Component {
             </Navbar.Brand>
           </Navbar.Header>
           <Nav className="navbar-right">
-            <NavItem onClick={() => this.setState({ addItem: true, activityname: '' })}>New Item</NavItem>
+            <NavItem onClick={() => this.setState({ addItem: true, itemname: '' })}>New Item</NavItem>
             <NavItem href="#">|</NavItem>
             <NavDropdown title={'welcome ' + localStorage.getItem('username')} id="basic-nav-dropdown">
               <MenuItem>My Profile</MenuItem>
@@ -242,9 +245,9 @@ export default class BucketItems extends Component {
               <Modal.Title id="add-bucket-modal-title">New Bucket-List Item</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form>
+              <Form onClick={this.addItem}>
                 <FormGroup>
-                  <FormControl type="text" id="itemname" placeholder="itemname" value={this.state.activityname} required onChange={this.onValueChange} />
+                  <FormControl type="text" id="itemname" placeholder="itemname" value={this.state.itemname} onChange={this.onValueChange} required/>
                 </FormGroup>
               </Form>
             </Modal.Body>
