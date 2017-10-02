@@ -94,7 +94,7 @@ export default class Register extends Component {
 										<FormControl type="text" id="email" placeholder="Email"  value={this.state.email} required onChange={this.onValueChange}  />
 									</FormGroup>
 									<FormGroup>
-										<FormControl type="password" id="password" placeholder="password" value={this.state.password} required onChange={this.onValueChange} ired />
+										<FormControl type="password" id="password" placeholder="password" value={this.state.password} required onChange={this.onValueChange} />
 									</FormGroup>
 									<FormGroup>
 										<FormControl type="password" id="confirm-password" placeholder="confirm password" required />

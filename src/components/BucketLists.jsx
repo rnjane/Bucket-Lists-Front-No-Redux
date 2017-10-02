@@ -145,6 +145,9 @@ export default class BucketLists extends Component {
     */
     addBucket = (event) => {
         event.preventDefault();
+        if (this.state.bucketname === ''){
+            toast('bucket list name can not be empty')
+          }else{
         instance.post('/bucketlists',
             { bucketname: this.state.bucketname })
             .then((response) => {
@@ -157,7 +160,7 @@ export default class BucketLists extends Component {
                 if (error.response) {
                     toast(error.response.data.message);
                 }
-            });
+            });}
     }
 
     /**
