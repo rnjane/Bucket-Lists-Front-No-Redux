@@ -110,7 +110,7 @@ export default class BucketItems extends Component {
   }
 
   /**
-  method to hedit an item in a bucket list.
+  method to edit an item in a bucket list.
   */
   editItem = (event) => {
     event.preventDefault();
@@ -186,7 +186,7 @@ export default class BucketItems extends Component {
     const close = () => this.setState({ addItem: false, editItem: false, deleteItem: false });
     return (
       <div>
-        <Navbar className="navbar-fixed-top">
+        <Navbar className="navbar-fixed-top navbar-inverse">
           <div>
             <ToastContainer />
           </div>
@@ -199,7 +199,6 @@ export default class BucketItems extends Component {
             <NavItem onClick={() => this.setState({ addItem: true, itemname: '' })}>New Item</NavItem>
             <NavItem href="#">|</NavItem>
             <NavDropdown title={'welcome ' + localStorage.getItem('username')} id="basic-nav-dropdown">
-              <MenuItem>My Profile</MenuItem>
               <MenuItem onClick={this.logout}>Logout</MenuItem>
             </NavDropdown>
           </Nav>
@@ -221,16 +220,20 @@ export default class BucketItems extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.items.map(item =>
+              {(this.state.items[0] != null)?
+                this.state.items.map(item =>
                 (<tr className='clickable-row' data-href='google.com'>
                   <td>{item.item_name}</td>
                   <td className="text-center">{item.item_status}</td>
                   <td className="text-center"><button type="button" className="btn btn-primary btn-sm" onClick={() => this.setState({ editItem: true, newname: item.item_name, currentItemId: item.item_id })}>Edit</button> </td>
                   <td className="text-center"><button type="button" className="btn btn-primary btn-sm" onClick={() => this.setState({ deleteItem: true, currentItem: item.item_name, currentItemId: item.item_id })}>Delete</button> </td>
                 </tr>),
-              )}
+              )
+              :<tr className='clickable-row'><td className="text-center">No Bucket List Items</td></tr>
+              }
             </tbody>
           </Table>
+          
         </div>
 
         {/* Add item modal */}
@@ -298,7 +301,7 @@ export default class BucketItems extends Component {
             aria-labelledby="delete-bucket-modal-title"
           >
             <Modal.Header closeButton>
-              <Modal.Title id="add-bucket-modal-title">Delete a Bucket-List</Modal.Title>
+              <Modal.Title id="delete-bucket-modal-title">Delete a Bucket-List</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               Are you sure to delete "{this.state.currentItem}"?

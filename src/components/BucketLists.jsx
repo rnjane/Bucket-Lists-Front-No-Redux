@@ -29,6 +29,7 @@ export default class BucketLists extends Component {
     fetch all the bucketlists before the component mounts.
     */
     componentWillMount = () => {
+        console.log(localStorage.getItem('token'))
         this.getBuckets();
     }
 
@@ -40,9 +41,6 @@ export default class BucketLists extends Component {
             .then((response) => {
                 if (response.status === 200) {
                     this.setState({ bucketlists: response.data.Buckets });
-                    /**
-                    check if response has a next page, and add it to state.
-                    */
                     if (response.data.next_page) {
                         this.setState({ next_page: response.data.next_page });
                     }
@@ -53,8 +51,9 @@ export default class BucketLists extends Component {
                 }
             })
             .catch((error) => {
-                if (error.response) {
-                    toast(error.response.data.message);
+                if (error.response === 'Token is invalid!') {
+                    this.setState({'refresh': true})
+                    // toast(error.response.data.message);
                 }
             });
     }
@@ -209,9 +208,6 @@ export default class BucketLists extends Component {
     render() {
         const close = () => this.setState({ addModal: false, editModal: false, deleteModal: false });
 
-        /**
-        update bucket lists state after edit, delete and add a bucket lists.
-        */
         if (this.state.editSucces || this.state.deleteSucces || this.state.addSucces || this.state.addFail) {
             this.getBuckets();
         }
@@ -228,7 +224,7 @@ export default class BucketLists extends Component {
 
         return (
             <div>
-                <Navbar className="navbar-fixed-top">
+                <Navbar className="navbar-fixed-top navbar-inverse">
                     <div>
                         <ToastContainer />
                     </div>
@@ -240,7 +236,7 @@ export default class BucketLists extends Component {
 
                     <Navbar.Form pullRight>
                         <FormGroup>
-                            <FormControl type="text" id="bucketsearch" placeholder="Search Bucketlist" value={this.state.search} required onChange={this.onValueChange} />
+                            <FormControl type="text" id="search" placeholder="Search Bucketlist" value={this.state.search} required onChange={this.onValueChange} />
                         </FormGroup>
                         {' '}
                         <Button type="submit" onClick={this.searchBucket}>Submit</Button>
@@ -255,6 +251,7 @@ export default class BucketLists extends Component {
                     </Nav>
                 </Navbar>
                 <div className="table-responsive container" width="90%">
+                {(this.state.bucketlists[0] != null)?
                     <Table striped bordered>
                         <colgroup>
                             <col span="1" style={{ width: '55%' }} />
@@ -279,8 +276,20 @@ export default class BucketLists extends Component {
                                     <td className="text-center"><button type="button" className="btn btn-primary btn-sm" onClick={() => this.setState({ deleteModal: true, currentBucket: bucket.bucket_name, currentBucketId: bucket.bucket_id })}>Delete</button></td>
                                 </tr>),
                             )}
-                        </tbody>
+                        </tbody>   
                     </Table>
+                    :<Table striped bordered>
+                        <thead>
+                            <tr>
+                                <th>Bucket Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr>
+                                    <td>No Bucket Lists</td>
+                                </tr>
+                        </tbody>   
+                    </Table>}
                     <Pager>
                         <Pager.Item previous onClick={this.goPrevious}>&larr; Previous Page</Pager.Item>
                         <Pager.Item onClick={this.goNext} next>Next Page &rarr;</Pager.Item>
@@ -344,7 +353,7 @@ export default class BucketLists extends Component {
                         aria-labelledby="delete-bucket-modal-title"
                     >
                         <Modal.Header closeButton>
-                            <Modal.Title id="add-bucket-modal-title">Delete a Bucket-List</Modal.Title>
+                            <Modal.Title id="delete-bucket-modal-title">Delete a Bucket-List</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             Are you sure to delete "{this.state.currentBucket}"?

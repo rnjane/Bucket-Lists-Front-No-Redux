@@ -29,11 +29,13 @@ export default class Login extends Component {
             password: this.state.password,
         }).then(response => {
             if (response.status === 202) {
-                localStorage.setItem('username', '');
-                localStorage.setItem('token', '');
+                localStorage.clear();
                 localStorage.setItem('username', response.data['username']);
                 localStorage.setItem('token', response.data['token']);
-                this.setState({ loginSucces: true });
+                
+                if(localStorage.getItem('token')!==null && localStorage.getItem('username')===this.state.username){
+                  this.setState({ loginSucces: true });
+                }
             }
             else {
                 toast(response.data.message)
