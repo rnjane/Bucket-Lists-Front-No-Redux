@@ -245,7 +245,6 @@ export default class BucketLists extends Component {
                         <NavItem onClick={() => this.setState({ addModal: true, bucketname: '' })}>New Bucket</NavItem>
                         <NavItem href="#">|</NavItem>
                         <NavDropdown title={`welcome ${localStorage.getItem('username')}`} id="basic-nav-dropdown">
-                            <MenuItem >My Profile</MenuItem>
                             <MenuItem onClick={this.logout}>Logout</MenuItem>
                         </NavDropdown>
                     </Nav>
