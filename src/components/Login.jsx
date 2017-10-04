@@ -80,7 +80,7 @@ export default class Login extends Component {
                         <hr />
                         <Row>
                             <Col className="col-lg-12">
-                                <Form onSubmit={this.login}>
+                                <Form onSubmit={this.login} id="loginform">
                                     <FormGroup>
                                         <FormControl type="text" id="username" placeholder="username" value={this.state.username} required onChange={this.onValueChange} />
                                     </FormGroup>
@@ -88,7 +88,7 @@ export default class Login extends Component {
                                         <FormControl type="password" id="password" placeholder="password" value={this.state.password} required onChange={this.onValueChange} />
                                     </FormGroup>
                                     <FormGroup>
-                                        <FormControl type="submit" value="Login" className="btn btn-primary" />
+                                        <FormControl type="submit" id="submit" value="Login" className="btn btn-primary" />
                                     </FormGroup>
                                     <FormGroup className="text-center">
                                         <Link to="/register" className="text-center"> No Account? Register</Link>
