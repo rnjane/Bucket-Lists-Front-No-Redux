@@ -1,9 +1,8 @@
 language: node_js
 node_js:
-  - "node"
-install:
-  - npm  install
+  - 6
+cache:
+  directories:
+    - node_modules
 script:
-  - npm cover
-notifications:
-  email: false
+  - npm test
