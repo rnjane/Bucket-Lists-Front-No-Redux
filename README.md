@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/rnjane/Bucket-Lists-Front-No-Redux.svg?branch=develop)](https://travis-ci.org/rnjane/Bucket-Lists-Front-No-Redux)
 [![Coverage Status](https://coveralls.io/repos/github/rnjane/Bucket-Lists-Front-No-Redux/badge.svg?branch=develop)](https://coveralls.io/github/rnjane/Bucket-Lists-Front-No-Redux?branch=develop)
 ### Project Introduction
 
